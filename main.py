@@ -5,13 +5,10 @@ from renderer import AtomRenderer
 from menu import AtomMenu
 
 def main():
-    """Main application entry point"""
     try:
-        # Initialize components
         renderer = AtomRenderer()
         menu = AtomMenu()
         
-        # Check for command line args
         if len(sys.argv) > 1:
             try:
                 atomic_number = int(sys.argv[1])
@@ -24,7 +21,6 @@ def main():
                 print(f"{Colors.ERROR}Invalid atomic number: {sys.argv[1]}{Colors.RESET}")
                 sys.exit(1)
         else:
-            # Run interactive mode
             menu.run_interactive_mode(renderer)
     
     except KeyboardInterrupt:

@@ -1,27 +1,18 @@
-"""
-Element data and atomic structure calculations.
-Contains the periodic table data and electron shell distribution logic.
-"""
-
 from dataclasses import dataclass
 from typing import List
 
 @dataclass
 class Element:
-    """Represents a chemical element with its properties"""
     atomic_number: int
     symbol: str
     name: str
     atomic_mass: float
     category: str = "Unknown"
 
-# Comprehensive periodic table data (1-118)
 ELEMENTS = {
-    # Period 1
     1: Element(1, "H", "Hydrogen", 1.008, "Nonmetal"),
     2: Element(2, "He", "Helium", 4.003, "Noble Gas"),
     
-    # Period 2
     3: Element(3, "Li", "Lithium", 6.941, "Alkali Metal"),
     4: Element(4, "Be", "Beryllium", 9.012, "Alkaline Earth"),
     5: Element(5, "B", "Boron", 10.811, "Metalloid"),
@@ -31,7 +22,6 @@ ELEMENTS = {
     9: Element(9, "F", "Fluorine", 18.998, "Halogen"),
     10: Element(10, "Ne", "Neon", 20.180, "Noble Gas"),
     
-    # Period 3
     11: Element(11, "Na", "Sodium", 22.990, "Alkali Metal"),
     12: Element(12, "Mg", "Magnesium", 24.305, "Alkaline Earth"),
     13: Element(13, "Al", "Aluminum", 26.982, "Metal"),
@@ -41,7 +31,6 @@ ELEMENTS = {
     17: Element(17, "Cl", "Chlorine", 35.453, "Halogen"),
     18: Element(18, "Ar", "Argon", 39.948, "Noble Gas"),
     
-    # Period 4
     19: Element(19, "K", "Potassium", 39.098, "Alkali Metal"),
     20: Element(20, "Ca", "Calcium", 40.078, "Alkaline Earth"),
     21: Element(21, "Sc", "Scandium", 44.956, "Transition Metal"),
@@ -61,7 +50,6 @@ ELEMENTS = {
     35: Element(35, "Br", "Bromine", 79.904, "Halogen"),
     36: Element(36, "Kr", "Krypton", 83.798, "Noble Gas"),
     
-    # Period 5
     37: Element(37, "Rb", "Rubidium", 85.468, "Alkali Metal"),
     38: Element(38, "Sr", "Strontium", 87.62, "Alkaline Earth"),
     39: Element(39, "Y", "Yttrium", 88.906, "Transition Metal"),
@@ -81,7 +69,6 @@ ELEMENTS = {
     53: Element(53, "I", "Iodine", 126.904, "Halogen"),
     54: Element(54, "Xe", "Xenon", 131.294, "Noble Gas"),
     
-    # Period 6
     55: Element(55, "Cs", "Cesium", 132.905, "Alkali Metal"),
     56: Element(56, "Ba", "Barium", 137.327, "Alkaline Earth"),
     57: Element(57, "La", "Lanthanum", 138.905, "Lanthanide"),
@@ -115,7 +102,6 @@ ELEMENTS = {
     85: Element(85, "At", "Astatine", 210.0, "Halogen"),
     86: Element(86, "Rn", "Radon", 222.0, "Noble Gas"),
     
-    # Period 7
     87: Element(87, "Fr", "Francium", 223.0, "Alkali Metal"),
     88: Element(88, "Ra", "Radium", 226.0, "Alkaline Earth"),
     89: Element(89, "Ac", "Actinium", 227.0, "Actinide"),
@@ -151,30 +137,18 @@ ELEMENTS = {
 }
 
 def get_element(atomic_number: int) -> Element:
-    """Get element data by atomic number"""
     if atomic_number in ELEMENTS:
         return ELEMENTS[atomic_number]
     else:
-        # Generate basic data for unknown elements
         return Element(
             atomic_number=atomic_number,
             symbol=f"E{atomic_number}",
             name=f"Element-{atomic_number}",
-            atomic_mass=atomic_number * 2.0,  # Rough estimate
+            atomic_mass=atomic_number * 2.0,
             category="Unknown"
         )
 
 def get_electron_shells(atomic_number: int) -> List[int]:
-    """
-    Calculate electron distribution across shells using the 2,8,18,32... pattern
-    
-    Args:
-        atomic_number: Number of protons (and electrons in neutral atom)
-    
-    Returns:
-        List of electrons in each shell [K, L, M, N, O, P, Q]
-    """
-    # Maximum electrons per shell: K=2, L=8, M=18, N=32, O=50, P=72, Q=98
     max_electrons = [2, 8, 18, 32, 50, 72, 98]
     shells = []
     remaining_electrons = atomic_number
@@ -187,26 +161,15 @@ def get_electron_shells(atomic_number: int) -> List[int]:
         shells.append(electrons_in_shell)
         remaining_electrons -= electrons_in_shell
     
-    # Handle any remaining electrons (for very heavy elements)
     if remaining_electrons > 0:
         shells.append(remaining_electrons)
     
     return shells
 
 def get_electron_configuration(atomic_number: int) -> str:
-    """
-    Generate electron configuration notation using aufbau principle
-    
-    Args:
-        atomic_number: Number of electrons
-    
-    Returns:
-        Electron configuration string (e.g., "1s² 2s² 2p⁶")
-    """
     if atomic_number <= 0:
         return ""
     
-    # Orbital filling order (Aufbau principle)
     orbital_order = [
         ("1s", 2), ("2s", 2), ("2p", 6), ("3s", 2), ("3p", 6), ("4s", 2),
         ("3d", 10), ("4p", 6), ("5s", 2), ("4d", 10), ("5p", 6), ("6s", 2),
@@ -222,7 +185,6 @@ def get_electron_configuration(atomic_number: int) -> str:
         
         electrons_in_orbital = min(remaining_electrons, max_electrons)
         
-        # Convert number to superscript
         superscript_map = {
             1: "¹", 2: "²", 3: "³", 4: "⁴", 5: "⁵", 6: "⁶", 7: "⁷", 8: "⁸", 9: "⁹", 10: "¹⁰",
             11: "¹¹", 12: "¹²", 13: "¹³", 14: "¹⁴"
@@ -235,29 +197,18 @@ def get_electron_configuration(atomic_number: int) -> str:
     return " ".join(configuration)
 
 def get_noble_gas_notation(atomic_number: int) -> str:
-    """
-    Generate noble gas notation for electron configuration
-    
-    Args:
-        atomic_number: Number of electrons
-    
-    Returns:
-        Noble gas notation (e.g., "[Ne] 3s² 3p¹")
-    """
     if atomic_number <= 2:
         return get_electron_configuration(atomic_number)
     
-    # Noble gas core electrons
     noble_gases = {
-        2: ("He", 2),    # Helium
-        10: ("Ne", 10),   # Neon
-        18: ("Ar", 18),   # Argon
-        36: ("Kr", 36),   # Krypton
-        54: ("Xe", 54),   # Xenon
-        86: ("Rn", 86),   # Radon
+        2: ("He", 2),
+        10: ("Ne", 10),
+        18: ("Ar", 18),
+        36: ("Kr", 36),
+        54: ("Xe", 54),
+        86: ("Rn", 86),
     }
     
-    # Find the largest noble gas core
     core_symbol = ""
     core_electrons = 0
     
@@ -269,7 +220,6 @@ def get_noble_gas_notation(atomic_number: int) -> str:
     if core_electrons == 0:
         return get_electron_configuration(atomic_number)
     
-    # Get configuration for remaining electrons
     remaining_electrons = atomic_number - core_electrons
     if remaining_electrons > 0:
         outer_config = get_electron_configuration(remaining_electrons)
@@ -278,21 +228,10 @@ def get_noble_gas_notation(atomic_number: int) -> str:
         return f"[{core_symbol}]"
 
 def get_valence_electrons(atomic_number: int) -> int:
-    """
-    Get the number of valence electrons for an element
-    
-    Args:
-        atomic_number: Atomic number of the element
-    
-    Returns:
-        Number of valence electrons
-    """
-    # Simple approach - electrons in outermost shell
     shells = get_electron_shells(atomic_number)
     return shells[-1] if shells else 0
 
 def get_element_period(atomic_number: int) -> int:
-    """Get the period (row) of an element in the periodic table"""
     if atomic_number <= 2:
         return 1
     elif atomic_number <= 10:
@@ -308,11 +247,9 @@ def get_element_period(atomic_number: int) -> int:
     elif atomic_number <= 118:
         return 7
     else:
-        return 8  # Hypothetical future elements
+        return 8
 
 def get_element_group(atomic_number: int) -> int:
-    """Get the group (column) of an element in the periodic table"""
-    # Simplified group calculation for main group elements
     if atomic_number == 1:
         return 1
     elif atomic_number == 2:
@@ -334,27 +271,16 @@ def get_element_group(atomic_number: int) -> int:
     elif atomic_number in [10, 18, 36, 54, 86, 118]:
         return 18
     else:
-        return 0  # Transition metals and others
+        return 0
 
 def get_orbital_diagram(atomic_number: int) -> str:
-    """
-    Generate a simple orbital diagram representation
-    
-    Args:
-        atomic_number: Number of electrons
-    
-    Returns:
-        Simplified orbital diagram string
-    """
     if atomic_number <= 0:
         return ""
     
-    # For simplicity, show only up to 3p orbitals
     orbitals = {
         "1s": 0, "2s": 0, "2p": 0, "3s": 0, "3p": 0
     }
     
-    # Fill orbitals according to Aufbau principle
     remaining = atomic_number
     
     if remaining > 0:
@@ -377,7 +303,6 @@ def get_orbital_diagram(atomic_number: int) -> str:
         orbitals["3p"] = min(6, remaining)
         remaining -= orbitals["3p"]
     
-    # Generate simple diagram
     diagram_parts = []
     for orbital, electrons in orbitals.items():
         if electrons > 0:
