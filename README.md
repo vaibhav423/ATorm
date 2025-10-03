@@ -13,7 +13,7 @@ A simple terminal-based atomic structure visualizer that displays all 118 elemen
 - **Smooth Animation** - Optimized rendering with minimal flickering
 
 ## 🚀 Quick Start
-
+download binary from release section 
 ```bash
 chmod +x ./main
 ./main
