@@ -15,13 +15,8 @@ A simple terminal-based atomic structure visualizer that displays all 118 elemen
 ## 🚀 Quick Start
 
 ```bash
-# Run interactively - it would show the main and give the option to select individually 
-python3 main.py
-
-# View specific element
-python3 main.py 79  # Gold
-python3 main.py 6   # Carbon
-python3 main.py 92  # Uranium
+chmod +x ./main
+./main
 ```
 
 ## 🎮 Usage
@@ -32,9 +27,4 @@ python3 main.py 92  # Uranium
    - Static - Traditional atomic structure view
 3. **Controls**: Press Ctrl+C to stop animation
 
-## 📋 Requirements
-
-- Python 3.6+
-- Terminal with color support
-- Recommended: 100+ columns width
 ---
